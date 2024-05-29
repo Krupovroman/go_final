@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Заметки</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body class="p8 b-bx">
+    <div style="display: flex; justify-content: space-between;">
+        <h1>Заметки</h1>
+        <form action="/logout" method="POST">
+            <button class="button-primary btn-dangerous" type="submit">Выйти</button>
+        </form>
+    </div>
+    <a class="button-primary" href="/note/create">Создать новую заметку</a>
+    <ul>
+        {{range .}}
+        <li class="flex-center-v">
+            <a class="p8" href="/note/edit/{{.ID}}">{{.Title}}</a>
+            <form action="/note/delete/{{.ID}}" method="POST" style="display:inline;">
+                <button class="button-primary btn-dangerous btn-sm" type="submit">Удалить</button>
+            </form>
+        </li>
+        {{end}}
+    </ul>
+</body>
+</html>
