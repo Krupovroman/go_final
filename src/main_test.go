@@ -17,14 +17,15 @@ import (
 	"gorm.io/gorm"
 )
 
+var testDB *gorm.DB
+
 func setupTestDB() *gorm.DB {
-	db, _ := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
-	if err := db.AutoMigrate(&User{}, &Note{}); err != nil {
+	testDB, _ := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
+	if err := testDB.AutoMigrate(&User{}, &Note{}); err != nil {
 		log.Fatal("Failed to auto migrate tables:", err)
 	}
-	return db
+	return testDB
 }
-
 func TestRegisterHandler(t *testing.T) {
 	db = setupTestDB()
 
