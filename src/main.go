@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -51,7 +52,7 @@ func init() {
 func main() {
 	var err error
 	if templates, err = template.ParseGlob("src/templates/*"); err != nil {
-		log.Fatal("Failed to parse templates:123", err)
+		log.Fatal("Failed to parse templates:", err)
 	}
 	r := mux.NewRouter()
 	r.HandleFunc("/", HomeHandler).Methods("GET")
@@ -66,9 +67,15 @@ func main() {
 	fs := http.FileServer(http.Dir("src/static"))
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", fs))
 
-	http.Handle("/", r)
+	srv := &http.Server{
+		Handler:      r,
+		Addr:         ":8080",
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
+	}
+
 	log.Println("Server started")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+	if err := srv.ListenAndServe(); err != nil {
 		log.Fatal("Server failed to start:", err)
 	}
 }
@@ -216,9 +223,9 @@ func EditNoteHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := r.ParseForm(); err != nil {
-    http.Error(w, "Internal server error", http.StatusInternalServerError)
-    return
-}
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
 	note.Title = r.FormValue("title")
 	note.Content = r.FormValue("content")
 	db.Save(&note)
@@ -254,7 +261,7 @@ func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		c, err := r.Cookie("token")
 		if err != nil {
-			if err == http.ErrNoCookie {
+			if errors.Is(err, http.ErrNoCookie) {
 				http.Redirect(w, r, "/login", http.StatusSeeOther)
 				return
 			}
@@ -268,7 +275,7 @@ func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 			return jwtKey, nil
 		})
 		if err != nil {
-			if err == jwt.ErrSignatureInvalid {
+			if errors.Is(err, jwt.ErrSignatureInvalid) {
 				http.Redirect(w, r, "/login", http.StatusSeeOther)
 				return
 			}
