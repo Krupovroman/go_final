@@ -138,7 +138,9 @@ func TestEditNoteHandler(t *testing.T) {
 
 	token, _ := generateJWT(user.Username)
 	ctx := context.Background()
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, "/note/edit/"+fmt.Sprintf("%d", note.ID), strings.NewReader(url.Values{
+	id := fmt.Sprintf("%d", note.ID)
+	editURL := "/note/edit/" + id
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, editURL, strings.NewReader(url.Values{
 		"title":   {"Updated Note"},
 		"content": {"Updated content"},
 	}.Encode()))
