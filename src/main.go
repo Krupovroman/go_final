@@ -43,7 +43,7 @@ func init() {
 	if err != nil {
 		log.Fatal("Failed connect to database:", err)
 	}
-	if err := db.AutoMigrate(&User{}, &Note{}); err != nil {
+	if err = db.AutoMigrate(&User{}, &Note{}); err != nil {
 		log.Fatal("Failed to auto migrate tables:", err)
 	}
 
@@ -75,7 +75,7 @@ func main() {
 	}
 
 	log.Println("Server started")
-	if err := srv.ListenAndServe(); err != nil {
+	if err = srv.ListenAndServe(); err != nil {
 		log.Fatal("Server failed to start:", err)
 	}
 }

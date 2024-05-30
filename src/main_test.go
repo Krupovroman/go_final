@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
@@ -31,7 +32,8 @@ func TestRegisterHandler(t *testing.T) {
 	form.Add("username", "testuser")
 	form.Add("password", "testpassword")
 
-	req, err := http.NewRequest(http.MethodPost, "/register", strings.NewReader(form.Encode()))
+	ctx := context.Background()
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, "/register", strings.NewReader(form.Encode()))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -63,7 +65,8 @@ func TestLoginHandler(t *testing.T) {
 	form.Add("username", "testuser")
 	form.Add("password", "testpassword")
 
-	req, err := http.NewRequest(http.MethodPost, "/login", strings.NewReader(form.Encode()))
+	ctx := context.Background()
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, "/login", strings.NewReader(form.Encode()))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -77,6 +80,7 @@ func TestLoginHandler(t *testing.T) {
 		t.Errorf("expected status %v, got %v", http.StatusSeeOther, rr.Code)
 	}
 
+	defer rr.Result().Body.Close()
 	cookie := rr.Result().Cookies()
 	if len(cookie) == 0 || cookie[0].Name != "token" {
 		t.Errorf("expected token cookie, got %v", cookie)
@@ -91,7 +95,8 @@ func TestCreateNoteHandler(t *testing.T) {
 	db.Create(&user)
 
 	token, _ := generateJWT(user.Username)
-	req, err := http.NewRequest(http.MethodPost, "/note/create", strings.NewReader(url.Values{
+	ctx := context.Background()
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, "/note/create", strings.NewReader(url.Values{
 		"title":   {"Test Note"},
 		"content": {"This is a test note"},
 	}.Encode()))
@@ -127,7 +132,8 @@ func TestEditNoteHandler(t *testing.T) {
 	db.Create(&note)
 
 	token, _ := generateJWT(user.Username)
-	req, err := http.NewRequest(http.MethodPost, "/note/edit/"+fmt.Sprintf("%d", note.ID), strings.NewReader(url.Values{
+	ctx := context.Background()
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, "/note/edit/"+fmt.Sprintf("%d", note.ID), strings.NewReader(url.Values{
 		"title":   {"Updated Note"},
 		"content": {"Updated content"},
 	}.Encode()))
@@ -163,7 +169,8 @@ func TestDeleteNoteHandler(t *testing.T) {
 	db.Create(&note)
 
 	token, _ := generateJWT(user.Username)
-	req, err := http.NewRequest(http.MethodPost, "/note/delete/"+fmt.Sprintf("%d", note.ID), nil)
+	ctx := context.Background()
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, "/note/delete/"+fmt.Sprintf("%d", note.ID), nil)
 	if err != nil {
 		t.Fatal(err)
 	}
