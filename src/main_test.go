@@ -20,7 +20,7 @@ import (
 var testDB *gorm.DB
 
 func setupTestDB() *gorm.DB {
-	testDB, _ := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
+	testDB, _ = gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
 	if err := testDB.AutoMigrate(&User{}, &Note{}); err != nil {
 		log.Fatal("Failed to auto migrate tables:", err)
 	}
@@ -82,6 +82,8 @@ func TestLoginHandler(t *testing.T) {
 	}
 
 	defer rr.Result().Body.Close()
+	//cookie body is already closed
+	//nolint
 	cookie := rr.Result().Cookies()
 	if len(cookie) == 0 || cookie[0].Name != "token" {
 		t.Errorf("expected token cookie, got %v", cookie)
