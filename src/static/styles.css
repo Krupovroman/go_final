@@ -1,0 +1,109 @@
+body {
+    font-family: Tahoma, Verdana, sans-serif;
+    font-size: 14px;
+    background: linear-gradient(to bottom, #ffffff, #96beb6);
+}
+
+html, body, #fullheight {
+    min-height: 100% !important;
+    height: 100%;
+    min-width: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+.login-form {
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    height: 160px;
+}
+
+.b-bx {
+    box-sizing: border-box;
+}
+
+.main-view {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.button-primary {
+    border: none;
+    padding: 0 8px;
+    background-color: #4888ff;
+    border-radius: 5px;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    width: max-content;
+    min-width: 70px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-success {
+    background-color: #3CB371;
+}
+
+.btn-success:hover {
+    background-color: #3d9364 !important;
+}
+
+.btn-dangerous {
+    background-color: #DC143C;
+}
+
+.btn-dangerous:hover {
+    background-color: #bf0b2f !important;
+}
+
+.btn-sm {
+    height: 24px;
+}
+
+.button-primary:hover {
+    background-color: #2d76ff;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.notes-input {
+    padding: 0 8px;
+    min-height: 32px;
+    background-clip: padding-box;
+    border: 1px solid #bdbdbd;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.notes-textarea {
+    padding: 8px;
+    resize: none;
+    min-height: 100px;
+    background-clip: padding-box;
+    border: 1px solid #bdbdbd;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.input-label {
+    font-weight: bold;
+    padding: 8px 0;
+}
+
+.flex-center-v {
+    display: flex;
+    align-items: center;
+}
+
+.p8 {
+    padding: 8px;
+}

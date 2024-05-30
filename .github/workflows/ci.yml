@@ -20,7 +20,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: '1.14'
+          go-version: '1.19'
 
       - name: Install golangci-lint
         run: |
@@ -28,7 +28,7 @@ jobs:
           golangci-lint --version
 
       - name: Run golangci-lint
-        run: golangci-lint run
+        run: golangci-lint run ./src/...
 
   test:
     runs-on: ubuntu-latest
@@ -39,10 +39,10 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: '1.14'
+          go-version: '1.19'
 
       - name: Run tests
-        run: go test -race -count 100 ./...
+        run: go test -race -count 100 ./src/...
 
   build:
     runs-on: ubuntu-latest
@@ -53,8 +53,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: '1.14'
+          go-version: '1.19'
 
       - name: Build binary
-        run: go build -o myapp
-        
+        run: go build -o myapp ./src/...

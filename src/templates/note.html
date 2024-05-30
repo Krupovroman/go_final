@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Заметка</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body class="p8 b-bx">
+    <form class="flex-column" action="" method="POST">
+        <div style="display: flex;grid-gap: 8px;">
+            <a class="button-primary" href="/notes">Назад</a>
+            <button class="button-primary btn-success" style="width: 100px;" type="submit">Сохранить</button>
+        </div>
+        <label class="input-label" for="title">Заголовок:</label>
+        <input class="notes-input" type="text" id="title" name="title" value="{{.Title}}" required>
+        <br>
+        <label class="input-label" for="content">Текст:</label>
+        <textarea class="notes-textarea" id="content" name="content" required>{{.Content}}</textarea>
+        <br>
+    </form>
+</body>
+</html>

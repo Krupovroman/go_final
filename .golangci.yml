@@ -1,0 +1,22 @@
+linters-settings:
+  golint:
+    min-confidence: 0.8
+
+linters:
+  enable:
+    - deadcode
+    - errcheck
+    - gosimple
+    - govet
+    - ineffassign
+    - staticcheck
+    - structcheck
+    - typecheck
+    - unused
+    - varcheck
+
+issues:
+  exclude-rules:
+    - linters:
+        - errcheck
+      text: "error return value not checked"
