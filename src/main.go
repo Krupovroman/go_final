@@ -46,7 +46,6 @@ func init() {
 	if err = db.AutoMigrate(&User{}, &Note{}); err != nil {
 		log.Fatal("Failed to auto migrate tables:", err)
 	}
-
 }
 
 func main() {

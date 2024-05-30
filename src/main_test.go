@@ -26,6 +26,7 @@ func setupTestDB() *gorm.DB {
 	}
 	return testDB
 }
+
 func TestRegisterHandler(t *testing.T) {
 	db = setupTestDB()
 
@@ -99,10 +100,11 @@ func TestCreateNoteHandler(t *testing.T) {
 
 	token, _ := generateJWT(user.Username)
 	ctx := context.Background()
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, "/note/create", strings.NewReader(url.Values{
-		"title":   {"Test Note"},
-		"content": {"This is a test note"},
-	}.Encode()))
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, "/note/create", strings.NewReader(
+		url.Values{
+			"title":   {"Test Note"},
+			"content": {"This is a test note"},
+		}.Encode()))
 	if err != nil {
 		t.Fatal(err)
 	}
